@@ -34,10 +34,12 @@ struct SolarSweepWidgetView: View {
     var body: some View {
         switch family {
         case .accessoryCorner:
-            CornerSweepView(value: entry.value)
+            Text(entry.value.clockText)
+                .font(.system(size: 11, weight: .semibold, design: .rounded))
+                .monospacedDigit()
+                .minimumScaleFactor(0.7)
                 .widgetLabel {
-                    Text(entry.value.clockText)
-                        .monospacedDigit()
+                    CornerSweepView(value: entry.value)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(entry.value.accessibilityText)
@@ -54,59 +56,43 @@ struct SolarSweepWidgetView: View {
 private struct CornerSweepView: View {
     let value: EquationOfTime
 
-    private let arcStart: CGFloat = 0.25
-    private let arcMiddle: CGFloat = 0.50
-    private let arcEnd: CGFloat = 0.75
-
     var body: some View {
         GeometryReader { proxy in
-            let size = min(proxy.size.width, proxy.size.height)
-            let lineWidth = max(3, size * 0.09)
-            let innerInset = size * 0.14
-            let radius = max(0, size / 2 - innerInset - lineWidth / 2)
-            let current = arcMiddle + (arcEnd - arcMiddle) * CGFloat(value.sweepFraction)
+            let lineWidth = max(3, proxy.size.height * 0.32)
+            let centerX = proxy.size.width / 2
+            let travel = max(0, centerX - lineWidth / 2)
+            let currentX = centerX + travel * CGFloat(value.sweepFraction)
 
             ZStack {
-                Circle()
-                    .trim(from: arcStart, to: arcEnd)
-                    .stroke(
-                        .secondary.opacity(0.55),
-                        style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
-                    )
-                    .padding(innerInset)
+                Capsule()
+                    .fill(.secondary.opacity(0.55))
+                    .frame(height: lineWidth)
 
-                Circle()
-                    .trim(
-                        from: min(arcMiddle, current),
-                        to: max(arcMiddle, current)
-                    )
-                    .stroke(
-                        Color.accentColor,
-                        style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
-                    )
-                    .padding(innerInset)
+                Path { path in
+                    path.move(to: CGPoint(x: centerX, y: proxy.size.height / 2))
+                    path.addLine(to: CGPoint(x: currentX, y: proxy.size.height / 2))
+                }
+                .stroke(
+                    Color.accentColor,
+                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                )
                     .widgetAccentable()
 
-                Circle()
-                    .trim(from: arcMiddle - 0.006, to: arcMiddle + 0.006)
-                    .stroke(
-                        .primary,
-                        style: StrokeStyle(lineWidth: lineWidth + 3, lineCap: .butt)
-                    )
-                    .padding(innerInset)
+                Capsule()
+                    .fill(.primary)
+                    .frame(width: 2, height: lineWidth + 3)
+                    .position(x: centerX, y: proxy.size.height / 2)
 
                 Image(systemName: "sun.max.fill")
-                    .font(.system(size: max(8, proxy.size.width * 0.23), weight: .semibold))
+                    .font(.system(size: max(7, proxy.size.height * 0.62), weight: .semibold))
                     .symbolRenderingMode(.monochrome)
                     .foregroundStyle(.primary)
-                    .rotationEffect(.degrees(Double(current) * 360))
-                    .offset(y: -radius)
-                    .rotationEffect(.degrees(-Double(current) * 360))
+                    .position(x: currentX, y: proxy.size.height / 2)
                     .widgetAccentable()
             }
-            .rotationEffect(.degrees(90))
         }
-        .aspectRatio(1, contentMode: .fit)
+        .frame(width: 44, height: 12)
+        .widgetCurvesContent()
     }
 }
 
