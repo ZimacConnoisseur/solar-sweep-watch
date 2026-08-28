@@ -19,6 +19,7 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Solar Sweep
         INFOPLIST_KEY_WKApplication: YES
+        INFOPLIST_KEY_WKWatchOnly: YES
     dependencies:
       - target: SolarSweepWidget
         embed: true
