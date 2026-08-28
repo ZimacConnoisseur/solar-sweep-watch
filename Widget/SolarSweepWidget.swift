@@ -54,43 +54,54 @@ struct SolarSweepWidgetView: View {
 private struct CornerSweepView: View {
     let value: EquationOfTime
 
+    private let arcStart: CGFloat = 0.15
+    private let arcMiddle: CGFloat = 0.50
+    private let arcEnd: CGFloat = 0.85
+
     var body: some View {
         GeometryReader { proxy in
-            let trackHeight = max(4, proxy.size.height * 0.25)
-            let centerX = proxy.size.width / 2
-            let travel = max(0, centerX - trackHeight / 2)
-            let currentX = centerX + travel * value.sweepFraction
+            let lineWidth = max(3, min(proxy.size.width, proxy.size.height) * 0.10)
+            let current = arcMiddle + (arcEnd - arcMiddle) * CGFloat(value.sweepFraction)
 
             ZStack {
-                Capsule()
-                    .fill(.secondary.opacity(0.35))
-                    .frame(height: trackHeight)
+                Circle()
+                    .trim(from: arcStart, to: arcEnd)
+                    .stroke(
+                        .secondary.opacity(0.55),
+                        style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                    )
 
-                Path { path in
-                    path.move(to: CGPoint(x: centerX, y: proxy.size.height / 2))
-                    path.addLine(to: CGPoint(x: currentX, y: proxy.size.height / 2))
-                }
-                .stroke(
-                    Color.accentColor,
-                    style: StrokeStyle(lineWidth: trackHeight, lineCap: .round)
-                )
-                .widgetAccentable()
+                Circle()
+                    .trim(
+                        from: min(arcMiddle, current),
+                        to: max(arcMiddle, current)
+                    )
+                    .stroke(
+                        Color.accentColor,
+                        style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                    )
+                    .widgetAccentable()
 
-                Capsule()
-                    .fill(.primary)
-                    .frame(width: 2, height: trackHeight + 4)
-                    .position(x: centerX, y: proxy.size.height / 2)
+                Circle()
+                    .trim(from: arcMiddle - 0.006, to: arcMiddle + 0.006)
+                    .stroke(
+                        .primary,
+                        style: StrokeStyle(lineWidth: lineWidth + 3, lineCap: .butt)
+                    )
 
                 Image(systemName: "sun.max.fill")
-                    .font(.system(size: max(8, proxy.size.height * 0.55), weight: .semibold))
+                    .font(.system(size: max(8, proxy.size.width * 0.23), weight: .semibold))
                     .symbolRenderingMode(.monochrome)
                     .foregroundStyle(.primary)
-                    .position(x: currentX, y: proxy.size.height / 2)
+                    .rotationEffect(.turns(Double(current)))
+                    .offset(y: -(min(proxy.size.width, proxy.size.height) - lineWidth) / 2)
+                    .rotationEffect(.turns(-Double(current)))
                     .widgetAccentable()
             }
+            .rotationEffect(.degrees(90))
+            .padding(lineWidth / 2)
         }
-        .frame(width: 42, height: 16)
-        .widgetCurvesContent()
+        .aspectRatio(1, contentMode: .fit)
     }
 }
 
