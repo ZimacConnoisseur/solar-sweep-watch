@@ -65,28 +65,17 @@ private struct CornerSweepView: View {
 
             ZStack {
                 Capsule()
-                    .fill(.secondary.opacity(0.55))
+                    .fill(Color.gray.opacity(0.82))
                     .frame(height: lineWidth)
 
-                Path { path in
-                    path.move(to: CGPoint(x: centerX, y: proxy.size.height / 2))
-                    path.addLine(to: CGPoint(x: currentX, y: proxy.size.height / 2))
-                }
-                .stroke(
-                    Color.accentColor,
-                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
-                )
-                    .widgetAccentable()
-
                 Capsule()
-                    .fill(.primary)
-                    .frame(width: 2, height: lineWidth + 3)
+                    .fill(Color.gray.opacity(0.45))
+                    .frame(width: 1.5, height: lineWidth + 2)
                     .position(x: centerX, y: proxy.size.height / 2)
 
-                Image(systemName: "sun.max.fill")
-                    .font(.system(size: max(7, proxy.size.height * 0.62), weight: .semibold))
-                    .symbolRenderingMode(.monochrome)
-                    .foregroundStyle(.primary)
+                Capsule()
+                    .fill(Color.white)
+                    .frame(width: 2.5, height: lineWidth + 5)
                     .position(x: currentX, y: proxy.size.height / 2)
                     .widgetAccentable()
             }
