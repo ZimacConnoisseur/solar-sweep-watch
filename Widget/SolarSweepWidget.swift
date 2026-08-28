@@ -44,6 +44,10 @@ struct SolarSweepWidgetView: View {
                         EmptyView()
                     } currentValueLabel: {
                         EmptyView()
+                    } markedValueLabels: {
+                        Text("|")
+                            .font(.system(size: 8, weight: .bold))
+                            .tag(0.0)
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(.white)
