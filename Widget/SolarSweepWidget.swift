@@ -38,8 +38,15 @@ struct SolarSweepWidgetView: View {
                 .font(.system(size: 11, weight: .semibold, design: .rounded))
                 .monospacedDigit()
                 .minimumScaleFactor(0.7)
+                .widgetCurvesContent()
                 .widgetLabel {
-                    CornerSweepView(value: entry.value)
+                    Gauge(value: entry.value.sweepFraction, in: -1...1) {
+                        EmptyView()
+                    } currentValueLabel: {
+                        EmptyView()
+                    }
+                    .gaugeStyle(.accessoryLinear)
+                    .tint(.white)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(entry.value.accessibilityText)
@@ -50,38 +57,6 @@ struct SolarSweepWidgetView: View {
             EquationDisplayView(value: entry.value, compact: true)
                 .padding(.horizontal, 5)
         }
-    }
-}
-
-private struct CornerSweepView: View {
-    let value: EquationOfTime
-
-    var body: some View {
-        GeometryReader { proxy in
-            let lineWidth = max(3, proxy.size.height * 0.32)
-            let centerX = proxy.size.width / 2
-            let travel = max(0, centerX - lineWidth / 2)
-            let currentX = centerX + travel * CGFloat(value.sweepFraction)
-
-            ZStack {
-                Capsule()
-                    .fill(Color.white.opacity(0.45))
-                    .frame(height: lineWidth)
-
-                Capsule()
-                    .fill(Color.white.opacity(0.70))
-                    .frame(width: 1.5, height: lineWidth + 2)
-                    .position(x: centerX, y: proxy.size.height / 2)
-
-                Capsule()
-                    .fill(Color.white)
-                    .frame(width: 2.5, height: lineWidth + 5)
-                    .position(x: currentX, y: proxy.size.height / 2)
-                    .widgetAccentable()
-            }
-        }
-        .frame(width: 44, height: 12)
-        .widgetCurvesContent()
     }
 }
 
