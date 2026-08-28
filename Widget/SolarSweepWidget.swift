@@ -54,13 +54,16 @@ struct SolarSweepWidgetView: View {
 private struct CornerSweepView: View {
     let value: EquationOfTime
 
-    private let arcStart: CGFloat = 0.15
+    private let arcStart: CGFloat = 0.25
     private let arcMiddle: CGFloat = 0.50
-    private let arcEnd: CGFloat = 0.85
+    private let arcEnd: CGFloat = 0.75
 
     var body: some View {
         GeometryReader { proxy in
-            let lineWidth = max(3, min(proxy.size.width, proxy.size.height) * 0.10)
+            let size = min(proxy.size.width, proxy.size.height)
+            let lineWidth = max(3, size * 0.09)
+            let innerInset = size * 0.14
+            let radius = max(0, size / 2 - innerInset - lineWidth / 2)
             let current = arcMiddle + (arcEnd - arcMiddle) * CGFloat(value.sweepFraction)
 
             ZStack {
@@ -70,6 +73,7 @@ private struct CornerSweepView: View {
                         .secondary.opacity(0.55),
                         style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                     )
+                    .padding(innerInset)
 
                 Circle()
                     .trim(
@@ -80,6 +84,7 @@ private struct CornerSweepView: View {
                         Color.accentColor,
                         style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                     )
+                    .padding(innerInset)
                     .widgetAccentable()
 
                 Circle()
@@ -88,18 +93,18 @@ private struct CornerSweepView: View {
                         .primary,
                         style: StrokeStyle(lineWidth: lineWidth + 3, lineCap: .butt)
                     )
+                    .padding(innerInset)
 
                 Image(systemName: "sun.max.fill")
                     .font(.system(size: max(8, proxy.size.width * 0.23), weight: .semibold))
                     .symbolRenderingMode(.monochrome)
                     .foregroundStyle(.primary)
                     .rotationEffect(.degrees(Double(current) * 360))
-                    .offset(y: -(min(proxy.size.width, proxy.size.height) - lineWidth) / 2)
+                    .offset(y: -radius)
                     .rotationEffect(.degrees(-Double(current) * 360))
                     .widgetAccentable()
             }
             .rotationEffect(.degrees(90))
-            .padding(lineWidth / 2)
         }
         .aspectRatio(1, contentMode: .fit)
     }
