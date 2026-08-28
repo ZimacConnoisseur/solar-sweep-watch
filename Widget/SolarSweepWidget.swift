@@ -40,17 +40,20 @@ struct SolarSweepWidgetView: View {
                 .minimumScaleFactor(0.7)
                 .widgetCurvesContent()
                 .widgetLabel {
-                    Gauge(value: entry.value.sweepFraction, in: -1...1) {
-                        EmptyView()
-                    } currentValueLabel: {
-                        EmptyView()
-                    } markedValueLabels: {
-                        Text("|")
-                            .font(.system(size: 8, weight: .bold))
-                            .tag(0.0)
+                    ZStack {
+                        Gauge(value: entry.value.sweepFraction, in: -1...1) {
+                            EmptyView()
+                        } currentValueLabel: {
+                            EmptyView()
+                        }
+                        .gaugeStyle(.accessoryLinear)
+                        .tint(.white)
+
+                        Text("│")
+                            .font(.system(size: 10, weight: .black, design: .rounded))
+                            .foregroundStyle(.white)
+                            .widgetCurvesContent()
                     }
-                    .gaugeStyle(.accessoryLinear)
-                    .tint(.white)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(entry.value.accessibilityText)
