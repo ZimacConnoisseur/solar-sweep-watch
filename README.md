@@ -12,7 +12,7 @@ A tiny Apple Watch complication/widget that shows the equation of time: the diff
 - Use the convention **apparent solar time minus mean solar time**. A positive value means a sundial is ahead of mean solar time.
 - Do not show an `EoT` text label on the complication.
 - Place a small center-zero sweep graphic above the value. Its indicator moves left for a negative value (apparent solar time behind mean solar time), centers at zero, and moves right for a positive value (ahead). Its distance from center represents the magnitude.
-- Support a compact complication first, with the containing watch app providing a short explanation and today's expanded value.
+- Support corner, circular, and rectangular complications, with the containing watch app providing a short explanation and today's expanded value.
 - Refresh often enough to track the slow day-to-day change; minute-by-minute refresh is unnecessary.
 
 ## Calculation
@@ -31,6 +31,7 @@ where `N` is the day of the year, `Y` is the number of days in that year, `h` is
 
 - Top: a thin horizontal or shallow-arc track with a center mark and one moving indicator.
 - Bottom: a signed `m:ss` value in monospaced digits.
+- Corner family: place the sun/sweep mark in the corner slot and curve the signed `m:ss` value along the bezel on watch faces that support corner labels.
 - Scale the sweep symmetrically to approximately `−17:00 … 0 … +17:00`, covering the annual range with a little visual margin.
 - Accessibility label should spell out the meaning, for example “apparent solar time is 3 minutes 12 seconds ahead of mean solar time.”
 

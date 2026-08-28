@@ -33,6 +33,15 @@ struct SolarSweepWidgetView: View {
 
     var body: some View {
         switch family {
+        case .accessoryCorner:
+            SolarSweepView(value: entry.value)
+                .frame(width: 28, height: 24)
+                .widgetLabel {
+                    Text(entry.value.clockText)
+                        .monospacedDigit()
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(entry.value.accessibilityText)
         case .accessoryCircular:
             EquationDisplayView(value: entry.value, compact: true)
                 .padding(4)
@@ -54,7 +63,7 @@ struct SolarSweepWidget: Widget {
         }
         .configurationDisplayName("Solar Sweep")
         .description("See how far sun time is ahead of or behind mean time.")
-        .supportedFamilies([.accessoryCircular, .accessoryRectangular])
+        .supportedFamilies([.accessoryCorner, .accessoryCircular, .accessoryRectangular])
     }
 }
 
@@ -62,5 +71,11 @@ struct SolarSweepWidget: Widget {
     SolarSweepWidget()
 } timeline: {
     SolarSweepEntry(date: .now, value: EquationOfTime(seconds: -14 * 60 - 8))
+    SolarSweepEntry(date: .now, value: EquationOfTime(seconds: 3 * 60 + 12))
+}
+
+#Preview("Corner", as: .accessoryCorner) {
+    SolarSweepWidget()
+} timeline: {
     SolarSweepEntry(date: .now, value: EquationOfTime(seconds: 3 * 60 + 12))
 }
