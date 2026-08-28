@@ -65,11 +65,11 @@ private struct CornerSweepView: View {
 
             ZStack {
                 Capsule()
-                    .fill(Color.gray.opacity(0.82))
+                    .fill(Color.white.opacity(0.45))
                     .frame(height: lineWidth)
 
                 Capsule()
-                    .fill(Color.gray.opacity(0.45))
+                    .fill(Color.white.opacity(0.70))
                     .frame(width: 1.5, height: lineWidth + 2)
                     .position(x: centerX, y: proxy.size.height / 2)
 
