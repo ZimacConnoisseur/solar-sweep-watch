@@ -34,7 +34,7 @@ struct SolarSweepWidgetView: View {
     var body: some View {
         switch family {
         case .accessoryCorner:
-            Text(entry.value.clockText)
+            Text("EoT \(entry.value.clockText)")
                 .font(.system(size: 11, weight: .semibold, design: .rounded))
                 .monospacedDigit()
                 .minimumScaleFactor(0.7)
