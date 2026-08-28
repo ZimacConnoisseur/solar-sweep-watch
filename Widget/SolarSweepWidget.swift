@@ -93,9 +93,9 @@ private struct CornerSweepView: View {
                     .font(.system(size: max(8, proxy.size.width * 0.23), weight: .semibold))
                     .symbolRenderingMode(.monochrome)
                     .foregroundStyle(.primary)
-                    .rotationEffect(.turns(Double(current)))
+                    .rotationEffect(.degrees(Double(current) * 360))
                     .offset(y: -(min(proxy.size.width, proxy.size.height) - lineWidth) / 2)
-                    .rotationEffect(.turns(-Double(current)))
+                    .rotationEffect(.degrees(-Double(current) * 360))
                     .widgetAccentable()
             }
             .rotationEffect(.degrees(90))
