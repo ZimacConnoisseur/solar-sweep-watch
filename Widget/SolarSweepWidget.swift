@@ -36,13 +36,13 @@ struct SolarSweepWidgetView: View {
         case .accessoryCorner:
             ZStack {
                 CornerSweepView(value: entry.value)
-                    .offset(x: 7, y: -7)
+                    .offset(x: -8, y: 9)
 
                 Text(entry.value.clockText)
                     .font(.system(size: 10, weight: .semibold, design: .rounded))
                     .monospacedDigit()
                     .minimumScaleFactor(0.7)
-                    .offset(x: -8, y: 9)
+                    .offset(x: 7, y: -7)
             }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(entry.value.accessibilityText)
