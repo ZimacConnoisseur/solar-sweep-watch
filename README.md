@@ -31,7 +31,7 @@ where `N` is the day of the year, `Y` is the number of days in that year, `h` is
 
 - Top: a thin horizontal or shallow-arc track with a center mark and one moving indicator.
 - Bottom: a signed `m:ss` value in monospaced digits.
-- Corner family: place the sun/sweep mark in the corner slot and curve the signed `m:ss` value along the bezel on watch faces that support corner labels.
+- Corner family: use a system-curved dotted sweep with a moving sun, allowing watchOS to follow and orient it for whichever corner the wearer chooses; curve the signed `m:ss` value along the inner bezel.
 - Scale the sweep symmetrically to approximately `−17:00 … 0 … +17:00`, covering the annual range with a little visual margin.
 - Accessibility label should spell out the meaning, for example “apparent solar time is 3 minutes 12 seconds ahead of mean solar time.”
 

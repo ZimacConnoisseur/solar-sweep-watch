@@ -34,8 +34,7 @@ struct SolarSweepWidgetView: View {
     var body: some View {
         switch family {
         case .accessoryCorner:
-            SolarSweepView(value: entry.value)
-                .frame(width: 28, height: 24)
+            CornerSweepView(value: entry.value)
                 .widgetLabel {
                     Text(entry.value.clockText)
                         .monospacedDigit()
@@ -49,6 +48,33 @@ struct SolarSweepWidgetView: View {
             EquationDisplayView(value: entry.value, compact: true)
                 .padding(.horizontal, 5)
         }
+    }
+}
+
+private struct CornerSweepView: View {
+    let value: EquationOfTime
+
+    private let stepCount = 7
+
+    private var sunStep: Int {
+        Int((((value.sweepFraction + 1) / 2) * Double(stepCount - 1)).rounded())
+    }
+
+    var body: some View {
+        HStack(spacing: 1) {
+            ForEach(0..<stepCount, id: \.self) { step in
+                if step == sunStep {
+                    Image(systemName: "sun.max.fill")
+                        .font(.system(size: 8, weight: .semibold))
+                        .widgetAccentable()
+                } else {
+                    Image(systemName: step == stepCount / 2 ? "diamond.fill" : "circle.fill")
+                        .font(.system(size: step == stepCount / 2 ? 3.5 : 2.5))
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .widgetCurvesContent()
     }
 }
 
