@@ -55,13 +55,42 @@ private struct CornerSweepView: View {
     let value: EquationOfTime
 
     var body: some View {
-        Gauge(value: value.seconds, in: (-17 * 60)...(17 * 60)) {
-            Text("Solar time")
-        } currentValueLabel: {
-            Image(systemName: "sun.max.fill")
+        GeometryReader { proxy in
+            let trackHeight = max(4, proxy.size.height * 0.25)
+            let centerX = proxy.size.width / 2
+            let travel = max(0, centerX - trackHeight / 2)
+            let currentX = centerX + travel * value.sweepFraction
+
+            ZStack {
+                Capsule()
+                    .fill(.secondary.opacity(0.35))
+                    .frame(height: trackHeight)
+
+                Path { path in
+                    path.move(to: CGPoint(x: centerX, y: proxy.size.height / 2))
+                    path.addLine(to: CGPoint(x: currentX, y: proxy.size.height / 2))
+                }
+                .stroke(
+                    Color.accentColor,
+                    style: StrokeStyle(lineWidth: trackHeight, lineCap: .round)
+                )
                 .widgetAccentable()
+
+                Capsule()
+                    .fill(.primary)
+                    .frame(width: 2, height: trackHeight + 4)
+                    .position(x: centerX, y: proxy.size.height / 2)
+
+                Image(systemName: "sun.max.fill")
+                    .font(.system(size: max(8, proxy.size.height * 0.55), weight: .semibold))
+                    .symbolRenderingMode(.monochrome)
+                    .foregroundStyle(.primary)
+                    .position(x: currentX, y: proxy.size.height / 2)
+                    .widgetAccentable()
+            }
         }
-        .gaugeStyle(.accessoryCircularCapacity)
+        .frame(width: 42, height: 16)
+        .widgetCurvesContent()
     }
 }
 
