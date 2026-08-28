@@ -54,27 +54,14 @@ struct SolarSweepWidgetView: View {
 private struct CornerSweepView: View {
     let value: EquationOfTime
 
-    private let stepCount = 7
-
-    private var sunStep: Int {
-        Int((((value.sweepFraction + 1) / 2) * Double(stepCount - 1)).rounded())
-    }
-
     var body: some View {
-        HStack(spacing: 1) {
-            ForEach(0..<stepCount, id: \.self) { step in
-                if step == sunStep {
-                    Image(systemName: "sun.max.fill")
-                        .font(.system(size: 8, weight: .semibold))
-                        .widgetAccentable()
-                } else {
-                    Image(systemName: step == stepCount / 2 ? "diamond.fill" : "circle.fill")
-                        .font(.system(size: step == stepCount / 2 ? 3.5 : 2.5))
-                        .foregroundStyle(.secondary)
-                }
-            }
+        Gauge(value: value.seconds, in: (-17 * 60)...(17 * 60)) {
+            Text("Solar time")
+        } currentValueLabel: {
+            Image(systemName: "sun.max.fill")
+                .widgetAccentable()
         }
-        .widgetCurvesContent()
+        .gaugeStyle(.accessoryCircularCapacity)
     }
 }
 
